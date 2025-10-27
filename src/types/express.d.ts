@@ -1,9 +1,9 @@
-import { IUserInRequest } from 'src/common/utils/userRequest.interface';
+import 'express-serve-static-core';
+import { User } from 'src/user/entity/user.entity';
 
-declare global {
-  namespace Express {
-    interface Request {
-      user: IUserInRequest;
-    }
+declare module 'express-serve-static-core' {
+  export interface Request {
+    cookies?: Record<string, any>;
+    user: User;
   }
 }

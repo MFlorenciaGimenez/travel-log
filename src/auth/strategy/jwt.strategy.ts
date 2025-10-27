@@ -1,20 +1,46 @@
-import { Injectable } from '@nestjs/common';
+/// <reference path="../../types/express.d.ts" />
+import { Request } from 'express';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserService } from 'src/user/user.service';
 
+function cookieExtractor(req: Request): string | null {
+  if (req?.cookies?.['access_token']) {
+    return req.cookies['access_token'];
+  }
+  return null;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly userService: UserService,
+  ) {
+    const secret = configService.get<string>('JWT_SECRET');
+    if (!secret) {
+      throw new Error('JWT_SECRET is not set in environment variables');
+    }
+
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        cookieExtractor,
+      ]),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET || 'supersecret',
+      secretOrKey: secret,
     });
   }
 
   async validate(payload: any) {
-    const user = await this.userService.findUser(payload.sub);
+    const userId = payload.sub || payload.id;
+    if (!userId) throw new UnauthorizedException('Invalid JWT payload');
+
+    const user = await this.userService.findUser(userId);
+    if (!user) throw new UnauthorizedException('User not found or invalid');
+
     return user;
   }
 }
