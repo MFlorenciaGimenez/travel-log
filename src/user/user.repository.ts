@@ -1,38 +1,49 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entity/user.entity';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/updateUser';
+import { User } from './entity/user.entity';
 import { SaveUserPayload } from './types/saveUserPayload.type';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
-  async saveUser(data: SaveUserPayload): Promise<User> {
+  saveUser(data: SaveUserPayload): Promise<User> {
     const newUser = this.userRepo.create(data);
     return this.userRepo.save(newUser);
   }
 
-  async getUsers() {
-    return await this.userRepo.find();
+  getUsers() {
+    return this.userRepo.find();
   }
 
-  async findUserById(id: string) {
-    const user = await this.userRepo.findOneBy({ id });
-    return user;
+  findUserById(id: string) {
+    return this.userRepo.findOne({
+      where: { id },
+      select: ['id', 'name', 'email', 'bio', 'country'],
+    });
   }
 
-  async updateProfile(
-    userId: string,
-    dto: UpdateUserDto,
-  ): Promise<UpdateResult> {
+  findUserByIdWithPassword(id: string) {
+    return this.userRepo.findOne({
+      where: { id },
+      select: ['id', 'password'],
+    });
+  }
+
+  updateProfile(userId: string, dto: UpdateUserDto) {
     return this.userRepo.update(userId, dto);
   }
 
-  async findByEmail(email: string) {
+  findByEmail(email: string) {
     return this.userRepo.findOne({ where: { email } });
+  }
+
+  update(id: string, data: Partial<User>) {
+    return this.userRepo.update(id, data);
   }
 }

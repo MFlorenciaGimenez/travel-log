@@ -15,31 +15,35 @@ import { RolesGuard } from 'src/auth/guards/role.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/common/utils/roles.decorator';
 import { CurrentUser } from 'src/common/utils/currentUser.decorator';
+import { UpdatePasswordDto } from './dto/updatePassword';
 
-@Controller()
+@Controller('/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  //Im using this path to show my profile
   @UseGuards(AuthGuard('jwt'))
   @Get('/me')
   async getMe(@CurrentUser() user: any) {
     return this.userService.findUser(user.id);
   }
-
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('admin')
-  @Get('/users')
-  getUsers() {
-    return this.userService.getUsers();
-  }
-  @Get(':id')
-  findUser(@Param('id') id: string) {
-    return this.userService.findUser(id);
-  }
+  //upload my profile information
   @UseGuards(JwtAuthGuard)
-  @Patch('profile')
+  @Patch('/me')
   updateProfile(@Req() req: Request, @Body() dto: UpdateUserDto) {
     const userId = req.user.id;
     return this.userService.updateProfile(userId, dto);
+  }
+  //change my password
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/me/password')
+  changePassword(@CurrentUser() user: any, @Body() dto: UpdatePasswordDto) {
+    return this.userService.changePassword(user.id, dto);
+  }
+
+  //to get others users public info
+  @Get(':id')
+  findUser(@Param('id') id: string) {
+    return this.userService.findUser(id);
   }
 }

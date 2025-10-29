@@ -25,10 +25,16 @@ export class AuthService {
     const payload = { sub: newUser.id, email: newUser.email };
     const token = this.jwtService.sign(payload);
 
+    const safeUser = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+    };
     return {
       success: true,
       message: 'User created successfully',
-      data: { user: newUser, access_token: token },
+      data: { user: safeUser, access_token: token },
     };
   }
 

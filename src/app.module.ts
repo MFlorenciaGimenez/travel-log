@@ -5,6 +5,7 @@ import typeOrmConfig from './config/typeOrm';
 import { DataSourceOptions } from 'typeorm';
 import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AdminModule } from './admin/admin.module';
     }),
     UserModule,
     AdminModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
