@@ -13,7 +13,7 @@ export class User {
   })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column({ nullable: true })
@@ -31,6 +31,12 @@ export class User {
   @Column({ nullable: true })
   bio?: string;
 
+  @Column({
+    type: 'enum',
+    enum: ['user', 'admin', 'moderator', 'tester'],
+    default: 'user',
+  })
+  role: string;
   //   @OneToMany(() => Trip, (trip) => trip.user)
   //   trips: Trip[];
 

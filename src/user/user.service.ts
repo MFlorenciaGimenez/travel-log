@@ -1,5 +1,4 @@
 import {
-  BadGatewayException,
   BadRequestException,
   Injectable,
   NotFoundException,
@@ -14,6 +13,14 @@ import { User } from './entity/user.entity';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  async findUser(id: string) {
+    const user = await this.userRepository.findUserById(id);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return user;
+  }
+
   async create(dto: CreateUserDto): Promise<User> {
     const existingUser = await this.userRepository.findByEmail(dto.email);
     if (existingUser) {
@@ -27,17 +34,14 @@ export class UserService {
       password: hashedPassword,
     });
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findByEmail(email);
+  }
+
   async getUsers() {
     const users = await this.userRepository.getUsers();
     return users;
-  }
-
-  async findUser(id: string) {
-    const user = await this.userRepository.findUserById(id);
-    if (!user) {
-      throw new BadRequestException(`user with id:${id} not found`);
-    }
-    return user;
   }
 
   async updateProfile(userId: string, dto: UpdateUserDto) {
