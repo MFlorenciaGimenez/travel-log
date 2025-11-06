@@ -1,17 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CityService } from './city.service';
-import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/common/utils/roles.decorator';
-import { AddCityDto } from './dto/addCity';
 
 @Controller('city')
 export class CityController {
@@ -27,15 +15,13 @@ export class CityController {
     return this.cityService.searchCity(query);
   }
 
-  @Get(':id')
-  async getCityById(@Param() id: string) {
-    return this.cityService.getCityById(id);
+  @Get('popular')
+  async getPopularCities() {
+    return this.cityService.getPopularCities();
   }
 
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // @Roles('admin')
-  // @Post()
-  // async addCity(@Body() dto: AddCityDto) {
-  //   return this.cityService.addCity(dto);
-  // }
+  @Get(':id')
+  async getCityById(@Param('id') id: string) {
+    return this.cityService.getCityById(id);
+  }
 }

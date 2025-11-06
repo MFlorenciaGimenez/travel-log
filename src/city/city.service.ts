@@ -6,7 +6,7 @@ export class CityService {
   constructor(private readonly cityRepository: CityRepository) {}
 
   async getCity() {
-    const cities = await this.cityRepository.getCities();
+    const cities = await this.cityRepository.findAll();
     return cities;
   }
 
@@ -16,5 +16,9 @@ export class CityService {
 
   async getCityById(id: string) {
     return this.cityRepository.getCityById(id);
+  }
+
+  async getPopularCities() {
+    return this.cityRepository.getPopularCities();
   }
 }

@@ -10,7 +10,7 @@ export class CityRepository {
     private readonly cityRepo: Repository<City>,
   ) {}
 
-  getCities() {
+  findAll() {
     return this.cityRepo.find();
   }
 
@@ -23,5 +23,21 @@ export class CityRepository {
 
   getCityById(id: string) {
     return this.cityRepo.findOne({ where: { id } });
+  }
+
+  async getPopularCities(limit = 10) {
+    const result = await this.cityRepo
+      .createQueryBuilder('city')
+      .leftJoin('city.trips', 'trip')
+      .addSelect('COUNT(trip.id)', 'tripCount')
+      .groupBy('city.id')
+      .orderBy('tripCount', 'DESC')
+      .limit(limit)
+      .getRawAndEntities();
+
+    return result.entities.map((city, i) => ({
+      ...city,
+      tripCount: Number(result.raw[i].tripCount),
+    }));
   }
 }

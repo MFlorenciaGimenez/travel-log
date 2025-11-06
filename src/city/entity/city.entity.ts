@@ -1,12 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Trip } from 'src/trips/entity/trip.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
+@Index(['name', 'country', 'state'], { unique: true })
 @Entity('city')
 export class City {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  city: string;
+  name: string;
 
   @Column()
   country: string;
@@ -19,4 +27,10 @@ export class City {
 
   @Column({ type: 'float', nullable: true })
   lat?: number;
+
+  @Column({ type: 'float', nullable: true })
+  lon?: number;
+
+  @ManyToMany(() => Trip, (trip) => trip.cities)
+  trips: Trip[];
 }

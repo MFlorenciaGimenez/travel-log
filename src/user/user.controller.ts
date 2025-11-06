@@ -11,9 +11,7 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser';
 import type { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-import { RolesGuard } from 'src/auth/guards/role.guard';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from 'src/common/utils/roles.decorator';
 import { CurrentUser } from 'src/common/utils/currentUser.decorator';
 import { UpdatePasswordDto } from './dto/updatePassword';
 
