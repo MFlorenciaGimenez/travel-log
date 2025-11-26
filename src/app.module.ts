@@ -8,6 +8,7 @@ import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { CityModule } from './city/city.module';
 import { TripsModule } from './trips/trips.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TripsModule } from './trips/trips.module';
     AuthModule,
     CityModule,
     TripsModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],

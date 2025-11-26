@@ -6,6 +6,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  console.log('AI_SERVICE_URL ENV:', process.env.AI_SERVICE_URL);
   app.use(cookieParser());
 
   app.useGlobalPipes(

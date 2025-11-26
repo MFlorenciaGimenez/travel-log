@@ -15,7 +15,13 @@ async function seedCities() {
       });
 
       if (!exists) {
-        const city = cityRepo.create(c);
+        const city = cityRepo.create({
+          name: c.name,
+          country: c.country,
+          state: c.state ?? undefined,
+          lat: c.lat ?? undefined,
+          lon: c.lon ?? undefined,
+        });
         await cityRepo.save(city);
       }
     }
