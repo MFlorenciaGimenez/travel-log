@@ -57,3 +57,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 Dockerfile
 docker-compose.yml
+.env.local
+
+# Cursor AI analysis files
+CODEBASE_ANALYSIS.md
+ESTADO_ACTUAL_PROYECTO.md
+SWAGGER_SETUP.md
