@@ -2,39 +2,40 @@ import {
   IsArray,
   IsBoolean,
   IsDateString,
-  IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTripDto {
+export class UpdateTripDto {
   @ApiProperty({
     description: 'Trip title',
     example: 'Summer in Paris',
-    maxLength: 100,
+    required: false,
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(100)
-  title: string;
+  title?: string;
 
   @ApiProperty({
-    description: 'Trip start date (ISO format)',
+    description: 'Trip start date',
     example: '2024-06-01',
+    required: false,
   })
   @IsDateString()
-  @IsNotEmpty()
-  startDate: string;
+  @IsOptional()
+  startDate?: string;
 
   @ApiProperty({
-    description: 'Trip end date (ISO format)',
+    description: 'Trip end date',
     example: '2024-06-15',
+    required: false,
   })
   @IsDateString()
-  @IsNotEmpty()
-  endDate: string;
+  @IsOptional()
+  endDate?: string;
 
   @ApiProperty({
     description: 'Trip description',
@@ -48,19 +49,20 @@ export class CreateTripDto {
   @ApiProperty({
     description: 'Whether the trip is public',
     example: true,
-    default: true,
     required: false,
   })
   @IsBoolean()
-  isPublic?: boolean = true;
+  @IsOptional()
+  isPublic?: boolean;
 
   @ApiProperty({
     description: 'Array of city IDs',
-    example: ['city-uuid-1', 'city-uuid-2'],
-    type: [String],
+    example: ['uuid1', 'uuid2'],
+    required: false,
   })
   @IsArray()
   @IsString({ each: true })
-  @IsNotEmpty()
-  cities: string[];
+  @IsOptional()
+  cities?: string[];
 }
+

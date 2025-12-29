@@ -45,7 +45,7 @@ export class UserController {
     },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async getMe(@CurrentUser() user: any) {
+  async getMe(@CurrentUser() user:{id:string}) {
     return this.userService.findUser(user.id);
   }
 

@@ -25,6 +25,7 @@ export class UserRepository {
     return this.userRepo.findOne({
       where: { id },
       select: ['id', 'name', 'email', 'bio', 'country'],
+      relations: ['trips'],
     });
   }
 
