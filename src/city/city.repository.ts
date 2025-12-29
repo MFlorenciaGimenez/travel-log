@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 import { City } from './entity/city.entity';
 
 @Injectable()
@@ -24,6 +24,12 @@ export class CityRepository {
   getCityById(id: string) {
     return this.cityRepo.findOne({ where: { id } });
   }
+
+  async findCitiesByIds(ids: string[]) {
+    return await this.cityRepo.findBy({
+        id: In(ids) 
+    });
+}
 
   async getPopularCities(limit = 10) {
     const result = await this.cityRepo

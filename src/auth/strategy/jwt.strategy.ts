@@ -1,10 +1,10 @@
 /// <reference path="../../types/express.d.ts" />
 import { Request } from 'express';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserService } from 'src/user/user.service';
+
 
 function cookieExtractor(req: Request): string | null {
   if (req?.cookies?.['access_token']) {
@@ -16,8 +16,7 @@ function cookieExtractor(req: Request): string | null {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private readonly configService: ConfigService,
-    private readonly userService: UserService,
+    configService: ConfigService,
   ) {
     const secret = configService.get<string>('JWT_SECRET');
     if (!secret) {

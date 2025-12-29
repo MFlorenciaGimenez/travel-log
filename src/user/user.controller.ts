@@ -19,7 +19,6 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser';
 import type { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/common/utils/currentUser.decorator';
 import { UpdatePasswordDto } from './dto/updatePassword';
 
@@ -28,7 +27,7 @@ import { UpdatePasswordDto } from './dto/updatePassword';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Get('/me')
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Get current user profile' })
@@ -66,7 +65,7 @@ export class UserController {
     return this.userService.updateProfile(userId, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Patch('/me/password')
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Change user password' })
