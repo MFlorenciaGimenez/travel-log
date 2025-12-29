@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Trip } from 'src/trips/entity/trip.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'user' })
 export class User {
@@ -37,8 +38,9 @@ export class User {
     default: 'user',
   })
   role: string;
-  //   @OneToMany(() => Trip, (trip) => trip.user)
-  //   trips: Trip[];
+  
+  @OneToMany(() => Trip, (trip) => trip.user)
+  trips: Trip[];
 
   //   @OneToMany(() => WishlistCity, (city) => city.user)
   //   wishlist: WishlistCity[];

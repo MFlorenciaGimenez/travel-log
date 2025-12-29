@@ -13,7 +13,7 @@ export class CreateTripDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
-  tittle: string;
+  title: string;
 
   @IsDateString()
   @IsNotEmpty()

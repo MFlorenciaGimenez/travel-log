@@ -1,4 +1,3 @@
-import { log } from 'console';
 import cities from './cities.json';
 import { City } from 'src/city/entity/city.entity';
 import { connectionSource } from 'src/config/typeOrm';

@@ -68,6 +68,10 @@ export class UserService {
     return this.userRepository.findByEmail(email);
   }
 
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    return this.userRepository.findByEmailWithPassword(email);
+  }
+
   async getUsers() {
     const users = await this.userRepository.getUsers();
     return users;

@@ -43,6 +43,13 @@ export class UserRepository {
     return this.userRepo.findOne({ where: { email } });
   }
 
+  findByEmailWithPassword(email: string) {
+    return this.userRepo.findOne({
+      where: { email },
+      select: ['id', 'email', 'password', 'name', 'role'],
+    });
+  }
+
   update(id: string, data: Partial<User>) {
     return this.userRepo.update(id, data);
   }
